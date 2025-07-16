@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="asd.png" />
+    <link rel="shortcut icon" type="image/png" href="asd.png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معمل الإيمان - باقات الفحوصات</title>
+    <style>
+        :root {
+            --primary: #ef71aa;
+            --secondary: #f44336;
+            --dark: #202124;
+            --light: #f8f9fa;
+            --gray: #dadce0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary), #ef71aa);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo i {
+            margin-left: 10px;
+            font-size: 1.5rem;
+        }
+        
+        /* Cart Button */
+        .cart-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: auto;
+            background: rgb(255, 255, 255);
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .cart-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        body.cart-open .cart-btn {
+            display: none;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Filter Buttons */
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 1.5rem;
+            background: white;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+        
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--gray);
+            background: white;
+            color: var(--dark);
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Packages Container */
+        .packages-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Package Card */
+        .package-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        
+        .package-image {
+            width: 100%;
+            height: 100;
+            object-fit: cover;
+        }
+
+        
+        
+        .price-section {
+            padding: 1rem;
+            text-align: center;
+            background: #f9f9f9;
+        }
+        
+        .new-price {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+            margin: 0.5rem 0;
+        }
+        
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: #d45f92;
+        }
+        
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            left: auto;
+            width: 380px;
+            height: 100vh;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 90;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cart-sidebar.open {
+            right: 0;
+        }
+        
+        .cart-header {
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        
+        .cart-item {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .cart-item-img {
+            width: 70px;
+            height: 70px;
+            background: #f5f7fa;
+            border-radius: 8px;
+            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .cart-item-details {
+            flex: 1;
+        }
+        
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        
+        .remove-item {
+            margin-left: 5rem;
+            color: var(--secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: block;
+            left: 50px;
+        }
+        
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .checkout-btn:hover {
+            background: #d45f92;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 80;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* Animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-15px);}
+            60% {transform: translateY(-5px);}
+        }
+        
+        .bounce {
+            animation: bounce 0.8s;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ef71aa;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            font-size: 1rem;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .packages-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .cart-sidebar {
+                width: 320px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .filter-section {
+                padding: 1rem;
+            }
+            
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .cart-sidebar.open {
+                right: 0;
+            }
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            padding: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-right: 20px;
+        }
+        
+        .menu-toggle {
+            left: 20px;
+            border-radius: 5px;
+            font-size: 30px;
+            color: #000000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            font-size: 30px;
+            color: #000000;
+            display: none;
+            top: 20px;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            z-index: 999;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #ef71aa;
+            font-weight: 700;
+            transition: 0.3s;
+            z-index: 999;
+        }
+        
+        nav a:hover {
+            color: #fa4c9a;
+        }
+        
+        .logo img {
+            width: 80px;
+            margin-left: 10px;
+        }
+        
+        .azxcs {
+            color: #ef71aa;
+            font-size: 30px;
+
+        }
+
+        .hjk {
+            color: #000000;
+            font-size: 30px;
+            
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: #fff;
+                padding: 34px;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                z-index: 999;
+            }
+            
+            nav ul.active {
+                display: flex;
+                padding: 34px;
+                z-index: 999;
+            }
+            
+            .logo {
+                justify-content: center;
+                width: 100%;
+                font-size: 11px;
+            }
+        }
+
+        .price-section {
+    display: none;
+}
+
+.logo.hjk{
+    text-align: center;
+    
+}
+
+
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #fff;
+      font-family: sans-serif;
+    }
+
+    .splash {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeOut 2s ease forwards;
+    }
+
+    .splash img {
+      width: 150px;
+      opacity: 0;
+      animation: zoomLogo 1.5s ease forwards;
+    }
+
+    @keyframes zoomLogo {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    .conten {
+      display: none;
+      padding: 40px;
+      text-align: center;
+    }
+    .az{
+       color: #ef71aa;
+       display: inline;
+       display: inline;
+    }
+
+    .container {
+    display: flex;
+    flex-wrap: wrap; /* يسمح للعناصر باللف إذا المساحة ضاقت */
+    gap: 10px;        /* مسافة بين العناصر */
+  }
+
+  .logo {
+    flex: 1 1 auto;   /* يسمح لهم بالتمدد أو الانكماش حسب الحاجة */
+    min-width: 150px; /* أقل عرض لكل عنصر */
+    text-align: center;
+  }
+  </style>
+
+
+  <!-- شاشة البداية باللوجو -->
+  <div class="splash" id="splash">
+    <img src="asd.png" alt="Logo">
+  </div>
+
+  <!-- محتوى الصفحة -->
+  
+
+  <script>
+    // بعد 2 ثانية من التحميل (مدة الأنيميشن)، أظهر المحتوى
+    setTimeout(() => {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    }, 2000);
+  </script>
+
+
+   
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h2 class="azxcs">العروض</h2>
+            <button class="menu-toggle">☰</button>
+
+        </div>
+
+        
+        <nav>
+            <ul>
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="عروض.html">عروض</a></li>
+                <li><a href="تحاليل.html">حجز تحليل أون لاين</a></li>             
+                <li><a href="الفروع .html">الفروع</a></li>
+                <li><a href="وظائف.html">وظائف</a></li>
+                <li><a href="من نحن.html">من نحن</a></li>
+                <li><a href="اتصل بنا.html">اتصل بنا</a></li>
+            </ul>
+        </nav>
+    </header>
+
+<div style="text-align: center; margin: 1rem 0;">
+    <input type="text" id="searchInput" placeholder="ابحث عن تحليل..." style="padding: 0.8rem 1.2rem; width: 90%; max-width: 500px; border: 2px solid #ef71aa; border-radius: 30px; font-size: 1rem; outline: none; transition: 0.3s;">
+</div>
+
+    
+    <!-- Cart Button -->
+    <button class="cart-btn">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">0</span>
+    </button>
+    
+    <!-- Filter Buttons -->
+   
+    
+    <!-- Packages Container -->
+    <div class="packages-container" id="packages-container">
+        <!-- Packages will be added dynamically -->
+    </div>
+    
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <div class="cart-title">سلة التسوق</div>
+            <button class="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be added dynamically -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>المجموع:</span>
+                <span id="cart-total">0 ريال</span>
+            </div>
+            <button class="checkout-btn" onclick="window.location.href='checkout.html'">إتمام الحجز</button>
+        </div>
+    </div>
+    
+    <!-- Overlay -->
+    <div class="overlay"></div>
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Sample Data with image paths
+        const packages = [
+            {
+                id: 1,
+                name: "للأطمئنان على البنكرياس",
+                image: "1.png", // Replace with your image path
+                price: 350
+            },
+            {
+                id: 2,
+                name: "عرض الاطمئنان على القلب والعضلات",
+                image: "2.png", // Replace with your image path
+                price: 250
+            },
+            {
+                id: 3,
+                name: "للاطمئنان على العظام",
+                image: "3.png", // Replace with your image path
+                price: 450
+            },
+            {
+                id: 4,
+                name: "عرض تحاليل فيتامينات الاعصاب",
+                image: "4.png", // Replace with your image path
+                price: 333
+            },
+            {
+                id: 5,
+                name: "عرض تحاليل فقر الدم والضغط",
+                image: "5.png", // Replace with your image path
+                price: 333
+            },
+            {
+                id: 6,
+                name: "صحه المرأه ",
+                image: "6.png", // Replace with your image path
+                price: 800
+            }
+        ];
+        
+        // DOM Elements
+        const packagesContainer = document.getElementById('packages-container');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+        const cartCountElement = document.querySelector('.cart-count');
+        const cartBtn = document.querySelector('.cart-btn');
+        const cartSidebar = document.querySelector('.cart-sidebar');
+        const closeCartBtn = document.querySelector('.close-cart');
+        const overlay = document.querySelector('.overlay');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navList = document.querySelector('nav ul');
+        
+        // Cart State
+        let cart = [];
+        
+        // Initialize the page
+        function init() {
+            renderPackages();
+
+    // البحث الديناميكي
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+        searchInput.addEventListener("input", function () {
+            const query = this.value.toLowerCase();
+            const cards = document.querySelectorAll(".package-card");
+            cards.forEach(card => {
+                const name = card.textContent.toLowerCase();
+                if (name.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    }
+
+            setupEventListeners();
+            updateCart();
+        }
+        
+        // Render packages
+        function renderPackages(filter = 'all') {
+            packagesContainer.innerHTML = '';
+            
+            const filteredPackages = filter === 'all' 
+                ? packages 
+                : packages.filter(pkg => pkg.category === filter);
+            
+            filteredPackages.forEach(pkg => {
+                const packageElement = document.createElement('div');
+                packageElement.className = 'package-card';
+                packageElement.dataset.id = pkg.id;
+                packageElement.dataset.category = pkg.category;
+                
+                packageElement.innerHTML = `
+                    <img src="${pkg.image}" alt="${pkg.name}" class="package-image">
+                    <div class="price-section">
+                        <span class="new-price">${pkg.price} ريال</span>
+                    </div>
+                    <button class="add-to-cart-btn">إضافة للسلة</button>
+                `;
+                
+                packagesContainer.appendChild(packageElement);
+            });
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Filter buttons
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderPackages(btn.dataset.filter);
+                });
+            });
+            
+            // Cart button
+            cartBtn.addEventListener('click', toggleCart);
+            
+            // Close cart button
+            closeCartBtn.addEventListener('click', toggleCart);
+            
+            // Overlay click
+            overlay.addEventListener('click', toggleCart);
+            
+            // Add to cart (delegated event)
+            packagesContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-to-cart-btn')) {
+                    const packageElement = e.target.closest('.package-card');
+                    const packageId = parseInt(packageElement.dataset.id);
+                    addToCart(packageId);
+                }
+            });
+            
+            // Cart item actions (delegated events)
+            cartItemsContainer.addEventListener('click', (e) => {
+                const cartItemElement = e.target.closest('.cart-item');
+                if (!cartItemElement) return;
+                
+                const packageId = parseInt(cartItemElement.dataset.id);
+                
+                if (e.target.classList.contains('remove-item')) {
+                    removeFromCart(packageId);
+                }
+            });
+            
+            // Menu toggle
+            menuToggle.addEventListener('click', () => {
+                navList.classList.toggle('active');
+            });
+        }
+        
+        // Cart functions
+        function addToCart(packageId) {
+            const existingItem = cart.find(item => item.id === packageId);
+
+            if (existingItem) {
+                showToast("هذا التحليل موجود بالفعل في السلة.");
+                return;
+            }
+
+            const packageToAdd = packages.find(pkg => pkg.id === packageId);
+            cart.push({
+                ...packageToAdd,
+                quantity: 1
+            });
+
+            updateCart();
+            animateCartButton();
+            showToast("تمت إضافة التحليل إلى السلة ✅");
+        }
+        
+        function removeFromCart(packageId) {
+            cart = cart.filter(item => item.id !== packageId);
+            updateCart();
+        }
+        
+        function updateCart() {
+            // Update cart items
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart" style="font-size: 2rem; margin-bottom: 1rem;"></i><p>سلة التسوق فارغة</p></div>';
+            } else {
+                cartItemsContainer.innerHTML = cart.map(item => `
+                    <div class="cart-item" data-id="${item.id}">
+                        <div class="cart-item-img">
+                            <img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price} ريال</div>
+                            <div class="cart-item-actions">
+                                <span class="remove-item">إزالة</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Update cart total
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotalElement.textContent = `${total} ريال`;
+            
+            // Update cart count
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountElement.textContent = count;
+            
+            // Save to localStorage
+            localStorage.setItem('lab-cart', JSON.stringify(cart));
+        }
+        
+        // UI functions
+        function toggleCart() {
+            const isOpen = cartSidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+            document.body.classList.toggle('cart-open', isOpen);
+        }
+        
+        function animateCartButton() {
+            cartBtn.classList.add('bounce');
+            setTimeout(() => {
+                cartBtn.classList.remove('bounce');
+            }, 800);
+        }
+        
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        function checkout() {
+            if (cart.length === 0) {
+                alert('سلة التسوق فارغة!');
+                return;
+            }
+            
+            // In a real app, you would redirect to checkout page
+            // window.location.href = '/checkout';
+        }
+        
+        // Load cart from localStorage
+        function loadCart() {
+            const savedCart = localStorage.getItem('lab-cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCart();
+            }
+        }
+        
+        // Initialize the app
+        loadCart();
+        init();
+    </script>
+    <script>
+// دالة لتوحيد النص العربي (تجاهل الهمزات وغيرها)
+function normalizeArabic(text) {
+    return text
+        .replace(/[أإآا]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .replace(/ئ/g, 'ي')
+        .replace(/ؤ/g, 'و')
+        .replace(/[^\u0600-\u06FF\s]/g, '') // إزالة الرموز
+        .toLowerCase();
+}
+
+// تفعيل البحث عند الكتابة
+document.getElementById("searchInput").addEventListener("input", function () {
+    const query = normalizeArabic(this.value);
+    const cards = document.querySelectorAll(".package-card");
+    cards.forEach(card => {
+        const name = normalizeArabic(card.textContent);
+        if (name.includes(query)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
+</script>
+
+</body>
+</html>

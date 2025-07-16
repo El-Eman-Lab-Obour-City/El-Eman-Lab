@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معمل الإيمان | Eman Lab - شروط التحاليل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --search-bg: #ffffff;
+            --search-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://via.placeholder.com/1200x300?text=EMAN+LAB') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        /* تصميم صندوق البحث المطور */
+        .search-container {
+            max-width: 700px;
+            margin: 40px auto;
+            position: relative;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 18px 25px;
+            padding-left: 60px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            box-shadow: var(--search-shadow);
+            transition: all 0.3s ease;
+            background-color: var(--search-bg);
+            color: #333;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: 20px;
+        }
+        
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 5px;
+            display: flex;
+            z-index: 2;
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn.active {
+            background: white;
+            color: var(--primary-color);
+        }
+        
+        /* بقية الأنماط... (يمكن إضافة المزيد حسب الحاجة) */
+        
+        /* تصميم الجداول ثنائية اللغة */
+        .test-name {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .test-name-en {
+            font-size: 0.85em;
+            color: #666;
+            display: block;
+            margin-top: 3px;
+            font-style: italic;
+        }
+        
+        /* تأثيرات حركية عند البحث */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .highlight {
+            background-color: #fffde7;
+            font-weight: bold;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="language-toggle">
+                <button class="lang-btn active" data-lang="ar">العربية</button>
+                <button class="lang-btn" data-lang="en">English</button>
+            </div>
+            <img src="https://via.placeholder.com/120x120?text=EMAN+LAB" alt="معمل الإيمان" class="logo">
+            <h1>شروط التحاليل الطبية</h1>
+            <p class="subtitle">دقة في النتائج - سرعة في الأداء - ثقة في التعامل</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن اسم التحليل...">
+        </div>
+        
+        <!-- باقي المحتوى مع تعديلات ثنائية اللغة -->
+        <table>
+            <thead>
+                <tr>
+                    <th>اسم التحليل</th>
+                    <th>الشروط</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="test-name">سكر صائم</span>
+                        <span class="test-name-en">Fasting Blood Sugar</span>
+                    </td>
+                    <td>صيام 8-12 ساعة (مسموح بشرب الماء فقط)</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="test-name">تحليل دهون الدم</span>
+                        <span class="test-name-en">Lipid Profile</span>
+                    </td>
+                    <td>صيام 12 ساعة</td>
+                </tr>
+                <!-- يمكن إضافة المزيد من الصفوف بنفس النمط -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // وظيفة البحث المطورة مع تمييز النتائج
+        const searchInput = document.getElementById('searchInput');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.trim().toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (searchTerm === '' || text.includes(searchTerm)) {
+                    row.style.display = '';
+                    
+                    // تمييز النص المطابق
+                    if (searchTerm !== '') {
+                        const regex = new RegExp(searchTerm, 'gi');
+                        row.innerHTML = row.innerHTML.replace(regex, match => 
+                            `<span class="highlight">${match}</span>`
+                        );
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+        
+        // تبديل اللغة
+        const langBtns = document.querySelectorAll('.lang-btn');
+        
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                langBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // هنا يمكن إضافة وظيفة تغيير اللغة
+                const lang = this.getAttribute('data-lang');
+                console.log('تم التبديل إلى: ' + lang);
+                // يمكن إضافة المزيد من الوظائف حسب اللغة المختارة
+            });
+        });
+    </script>
+</body>
+</html>

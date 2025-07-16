@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>استعلام نتائج التحليل الطبي</title>
+  <link rel="shortcut icon" type="image/x-icon" href="asd.png" />
+    <link rel="shortcut icon" type="image/png" href="asd.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #ef71aa;
+      --secondary-color: #f8f9fa;
+      --accent-color: #e3f2fd;
+      --text-color: #333;
+      --error-color: #e53935;
+      --success-color: #43a047;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Tajawal', Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .container {
+      max-width: 100%;
+      padding: 20px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    
+    .header h2 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    
+    .header .logo {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: white;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+    
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    button:hover {
+      background-color: #fa4c9a;
+    }
+    
+    .result-card {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .result-content {
+      padding: 15px;
+      border-radius: 8px;
+      background-color: var(--accent-color);
+      margin-top: 15px;
+    }
+    
+    .result-title {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .pdf-link {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .pdf-link:hover {
+      background-color: #fa4c9a;
+    }
+    
+    .pdf-icon {
+      margin-left: 8px;
+    }
+    
+    .error-message {
+      color: var(--error-color);
+      text-align: center;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    
+    .success-message {
+      color: var(--success-color);
+      text-align: center;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid var(--primary-color);
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #777;
+      font-size: 0.9rem;
+      margin-top: 30px;
+    }
+    
+    .contact-info {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    
+    .contact-info a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    
+    @media (min-width: 768px) {
+      .container {
+        max-width: 600px;
+      }
+      
+      .header h2 {
+        font-size: 1.8rem;
+      }
+    }
+    img{
+        font-size: 20px;
+        width: 100px;
+        padding-bottom: -20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <img src="asd.png">
+    </div>
+    <h2>استلم نتائج التحاليل الطبية</h2>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <form id="resultForm">
+        <div class="form-group">
+          <label for="patientName">
+            <i class="fas fa-user"></i> اسم المريض
+          </label>
+          <input type="text" id="patientName" required placeholder="ادخل اسم المريض بالكامل" />
+        </div>
+        
+        <div class="form-group">
+          <label for="password">
+            <i class="fas fa-lock"></i> كلمة السر أو رقم الطلب
+          </label>
+          <input type="password" id="password" required placeholder="ادخل كلمة السر أو رقم الطلب" />
+        </div>
+        
+        <button type="submit">
+          <i class="fas fa-search"></i> عرض النتيجة
+        </button>
+      </form>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>جاري البحث عن النتائج...</p>
+    </div>
+    
+    <div class="card result-card" id="result">
+      <h3 class="result-title">
+        <i class="fas fa-file-medical"></i> نتيجة التحليل
+      </h3>
+      <div class="result-content" id="resultContent"></div>
+    </div>
+  </div>
+  
+  
+
+  <script>
+    document.getElementById('resultForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('patientName').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const loading = document.getElementById('loading');
+      const resultCard = document.getElementById('result');
+      const resultContent = document.getElementById('resultContent');
+      
+      if (!name || !password) {
+        resultContent.innerHTML = `<p class="error-message">من فضلك ادخل البيانات كاملة</p>`;
+        resultCard.style.display = 'block';
+        return;
+      }
+      
+      // Show loading
+      loading.style.display = 'block';
+      resultCard.style.display = 'none';
+      
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzaNNjlawoss4mTA9HwLXPi8aF7JfQ15kaeCGMjCso6SeSx7bt2BGKwfW3Ch1BK0leCyQ/exec');
+        if (!response.ok) throw new Error('خطأ في الاتصال بالخادم');
+        
+        const data = await response.json();
+        
+        // البحث عن المريض
+        const patient = data.patients.find(p => p.name === name && p.password.toString() === password);
+        
+        loading.style.display = 'none';
+        resultCard.style.display = 'block';
+        
+        if (patient) {
+          if(patient.pdf_url && patient.pdf_url.startsWith('http')) {
+            resultContent.innerHTML = `
+              <p>تم العثور على نتيجة التحليل الخاصة بك</p>
+              <p>اسم المريض: <strong>${name}</strong></p>
+              <a href="${patient.pdf_url}" target="_blank" class="pdf-link">
+                <i class="fas fa-file-pdf pdf-icon"></i> فتح ملف النتيجة (PDF)
+              </a>
+              <div class="qr-code-container" id="qrCodeContainer"></div>
+            `;
+            
+            // Generate QR code for the PDF link
+            if(typeof QRCode !== 'undefined') {
+              new QRCode(document.getElementById("qrCodeContainer"), {
+                text: patient.pdf_url,
+                width: 120,
+                height: 120,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+              });
+            }
+          } else {
+            resultContent.innerHTML = `
+              <p>تم العثور على نتيجة التحليل الخاصة بك</p>
+              <p>اسم المريض: <strong>${name}</strong></p>
+              <div class="result-text">${patient.pdf_url}</div>
+            `;
+          }
+        } else {
+          resultContent.innerHTML = `<p class="error-message">لم يتم العثور على نتيجة لهذا الاسم وكلمة السر</p>`;
+        }
+      } catch (err) {
+        loading.style.display = 'none';
+        resultCard.style.display = 'block';
+        resultContent.innerHTML = `<p class="error-message">حدث خطأ أثناء جلب النتيجة: ${err.message}</p>`;
+      }
+    });
+    
+
+  </script>
+  
+  <!-- QR Code library -->
+
+</body>
+</html>
